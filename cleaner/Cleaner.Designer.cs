@@ -1,6 +1,6 @@
 ﻿namespace cleaner
 {
-    partial class Form1
+    partial class Cleaner
     {
         /// <summary>
         /// Erforderliche Designervariable.
@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Cleaner));
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.SuspendLayout();
             // 
@@ -38,14 +39,15 @@
             this.treeView1.Size = new System.Drawing.Size(890, 603);
             this.treeView1.TabIndex = 0;
             // 
-            // Form1
+            // Cleaner
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(914, 627);
             this.Controls.Add(this.treeView1);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "Cleaner";
+            this.Text = "\"XCP-ng Windows Guest Tools - Cleaner";
             this.ResumeLayout(false);
 
         }

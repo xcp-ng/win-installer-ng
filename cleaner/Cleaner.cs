@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace cleaner
 {
-    public partial class Form1 : Form
+    public partial class Cleaner : Form
     {
-        public Form1()
+        public Cleaner()
         {
             InitializeComponent();
         }
@@ -38,6 +38,10 @@ namespace cleaner
                 {
                     xenDriverFilesNode.Nodes.Add(xenDriverFile.FullName);
                 }
+            }
+            else
+            {
+                TreeNode xenDriverFilesNode = treeView1.Nodes.Add("No Leftover XenDrivers in " + windowsSystem32Dir.FullName);
             }
 
 
