@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Drawing;
 
 namespace cleaner
 {
@@ -33,15 +34,19 @@ namespace cleaner
             if (xenDriverFiles.Count() > 0)
             {
                 TreeNode xenDriverFilesNode = treeView1.Nodes.Add("Leftover XenDrivers in " + windowsSystem32Dir.FullName + " (" + xenDriverFiles.Count() + ")");
-
+                xenDriverFilesNode.ForeColor = Color.Red;
+                
                 foreach (var xenDriverFile in xenDriverFiles)
                 {
                     xenDriverFilesNode.Nodes.Add(xenDriverFile.FullName);
                 }
+
+                xenDriverFilesNode.ExpandAll();
             }
             else
             {
                 TreeNode xenDriverFilesNode = treeView1.Nodes.Add("No Leftover XenDrivers in " + windowsSystem32Dir.FullName);
+                xenDriverFilesNode.ForeColor = Color.Green;
             }
 
 

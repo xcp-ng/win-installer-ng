@@ -47,7 +47,7 @@
             this.Controls.Add(this.treeView1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Cleaner";
-            this.Text = "\"XCP-ng Windows Guest Tools - Cleaner";
+            this.Text = "XCP-ng Windows Guest Tools - Cleaner";
             this.ResumeLayout(false);
 
         }
