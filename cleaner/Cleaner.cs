@@ -5,9 +5,9 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Management;
 using System.Text;
 using System.Windows.Forms;
-using System.Drawing;
 
 namespace cleaner
 {
@@ -22,7 +22,20 @@ namespace cleaner
         {
             base.OnShown(e);
 
+            this.SuspendLayout();
 
+            /*
+             * PCI-Devices 
+             */
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher("select * from Win32_PNPEntity Where deviceid Like '%VEN_5853%'");
+            TreeNode pciDevicesNode = treeView1.Nodes.Add("PCI devices");
+
+            foreach (ManagementObject obj in searcher.Get())
+            {
+                pciDevicesNode.Nodes.Add(obj.ToString());
+            }
+
+            pciDevicesNode.ExpandAll();
 
 
             /*
@@ -35,7 +48,7 @@ namespace cleaner
             {
                 TreeNode xenDriverFilesNode = treeView1.Nodes.Add("Leftover XenDrivers in " + windowsSystem32Dir.FullName + " (" + xenDriverFiles.Count() + ")");
                 xenDriverFilesNode.ForeColor = Color.Red;
-                
+
                 foreach (var xenDriverFile in xenDriverFiles)
                 {
                     xenDriverFilesNode.Nodes.Add(xenDriverFile.FullName);
@@ -50,7 +63,7 @@ namespace cleaner
             }
 
 
-
+            this.ResumeLayout();
 
         }
     }
