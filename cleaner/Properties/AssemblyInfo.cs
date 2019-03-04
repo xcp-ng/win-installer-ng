@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // Allgemeine Informationen über eine Assembly werden über die folgenden
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
 // die einer Assembly zugeordnet sind.
-[assembly: AssemblyTitle("cleaner")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("XCP-ng cleaner")]
+[assembly: AssemblyDescription("Checks if a VM is clean for installing XCP-ng Windows Guest Tools")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("cleaner")]
-[assembly: AssemblyCopyright("Copyright ©  2019")]
+[assembly: AssemblyProduct("XCP-ng Windows Guest Tools")]
+[assembly: AssemblyCopyright("Copyright © XCP-ng 2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

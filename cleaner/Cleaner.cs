@@ -16,6 +16,8 @@ namespace cleaner
         public Cleaner()
         {
             InitializeComponent();
+
+            this.Text += " " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
         }
 
         protected override void OnShown(EventArgs e)
@@ -27,15 +29,98 @@ namespace cleaner
             /*
              * PCI-Devices 
              */
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher("select * from Win32_PNPEntity Where deviceid Like '%VEN_5853%'");
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher("root\\CIMV2", "select * from Win32_PnPSignedDriver Where HardWareID Like '%VEN_5853%' OR HardWareID Like '%XEN%'");
             TreeNode pciDevicesNode = treeView1.Nodes.Add("PCI devices");
+
+            bool foundAny = false;
+            bool foundEmptyC000 = false;
+            bool foundEmpty0002 = false;
+            bool foundEmpty0001 = false;
+            bool foundACPI = false;
+            bool foundOther = false;
 
             foreach (ManagementObject obj in searcher.Get())
             {
-                pciDevicesNode.Nodes.Add(obj.ToString());
+                foundAny = true;
+
+                bool green = false;
+                string deviceID = Convert.ToString(obj["DeviceID"]);
+                string infName = Convert.ToString(obj["InfName"]);
+                TreeNode pciDevice = pciDevicesNode.Nodes.Add(deviceID);
+
+                if (deviceID.Contains("DEV_C000"))
+                {
+                    if (infName == "")
+                    {
+                        foundEmptyC000 = true;
+                        green = true;
+                    }
+                }
+                else if (deviceID.Contains("DEV_0002"))
+                {
+                    if (infName == "")
+                    {
+                        foundEmpty0002 = true;
+                        green = true;
+                    }
+                }
+                else if (deviceID.Contains("DEV_0001"))
+                {
+                    if (infName == "")
+                    {
+                        foundEmpty0001 = true;
+                        green = true;
+                    }
+                }
+                else if (deviceID.Contains(@"XEN0000"))
+                {
+                    // ignore
+                    green = true;
+                }
+                else
+                {
+                    foundOther = true;
+                }
+
+                // Only Informational Section
+                AddDeviceProperty(obj, pciDevice, "FriendlyName");
+                AddDeviceProperty(obj, pciDevice, "HardwareID");
+                AddDeviceProperty(obj, pciDevice, "DriverVersion");
+                AddDeviceProperty(obj, pciDevice, "DriverDate");
+                AddDeviceProperty(obj, pciDevice, "InfName");
+                AddDeviceProperty(obj, pciDevice, "Manufacturer");
+                AddDeviceProperty(obj, pciDevice, "DriverProviderName");
+                AddDeviceProperty(obj, pciDevice, "Signer");
+                AddDeviceProperty(obj, pciDevice, "StartMode");
+                AddDeviceProperty(obj, pciDevice, "Status");
+
+                // Set color
+                if (green)
+                {
+                    pciDevice.ForeColor = Color.Green;
+                }
+                else
+                {
+                    pciDevice.ForeColor = Color.Red;
+                }
             }
 
-            pciDevicesNode.ExpandAll();
+            if (!foundAny)
+            {
+                pciDevicesNode.ForeColor = Color.Red;
+                pciDevicesNode.Text = "No XEN PCI devices found!";
+            }
+            else if (foundOther)
+            {
+                pciDevicesNode.ForeColor = Color.Red;
+                pciDevicesNode.Text = "Used XEN PCI devices found!";
+            }
+            else if (foundEmptyC000 && (foundEmpty0002 || foundEmpty0001))
+            {
+                pciDevicesNode.ForeColor = Color.Green;
+            }
+
+            pciDevicesNode.Expand();
 
 
             /*
@@ -46,7 +131,7 @@ namespace cleaner
 
             if (xenDriverFiles.Count() > 0)
             {
-                TreeNode xenDriverFilesNode = treeView1.Nodes.Add("Leftover XenDrivers in " + windowsSystem32Dir.FullName + " (" + xenDriverFiles.Count() + ")");
+                TreeNode xenDriverFilesNode = treeView1.Nodes.Add("Leftover XenDrivers in " + windowsSystem32Dir.FullName);
                 xenDriverFilesNode.ForeColor = Color.Red;
 
                 foreach (var xenDriverFile in xenDriverFiles)
@@ -65,6 +150,11 @@ namespace cleaner
 
             this.ResumeLayout();
 
+        }
+
+        private void AddDeviceProperty(ManagementObject obj, TreeNode pciDevice, string property)
+        {
+            pciDevice.Nodes.Add(property + ": " + Convert.ToString(obj[property]));
         }
     }
 }
