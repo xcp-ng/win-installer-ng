@@ -103,7 +103,7 @@
     <Content Include="appicon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CleanerLib\Cleaner.csproj">
+    <ProjectReference Include="..\Cleaner\Cleaner.csproj">
       <Project>{af1300ef-343e-4f22-b16f-4717f20edfa2}</Project>
       <Name>Cleaner</Name>
     </ProjectReference>
