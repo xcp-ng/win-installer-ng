@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace cleaner
+namespace Cleaner
 {
     static class Program
     {
@@ -15,7 +15,7 @@ namespace cleaner
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Cleaner());
+            Application.Run(new CleanerGui());
         }
     }
 }
